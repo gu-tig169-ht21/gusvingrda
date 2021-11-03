@@ -74,7 +74,15 @@ class _MyHomePageState extends State<MyHomePage> {
     return evenOrNot;
   }
 
-//-------------- First try in checking if number is even or not
+//-------------- ^ First try in checking if number is even or not ^
+  getIcon(int counter) {
+    var ic = Icons.add;
+    if (counter == 49) {
+      ic = Icons.restart_alt_sharp;
+    }
+    return ic;
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -93,7 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const Text(
-              'Can you reach a 100?\nIf even = text is green, if uneven = text is red',
+              'What happens when you reach 49?\nIf even = text is green, if uneven = text is red',
+              style: TextStyle(fontSize: 20),
             ),
             Text(
               'Times pressed: $_counter',
@@ -102,13 +111,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontWeight: FontWeight.bold,
                   fontSize: _counter.toDouble()),
             ),
+            if (_counter == 49) Image.asset('assets/celebration.gif'),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: Icon(getIcon(_counter)),
         backgroundColor: Colors.green,
         focusColor: Colors.grey,
         elevation: 10,
