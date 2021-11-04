@@ -1,5 +1,5 @@
-//import 'package:flutter/material.dart';
 
+/* BELOW ARE JUST SOME EARLIER TESTING
 class Color {
   void main() {
     int value = 18;
@@ -25,3 +25,4 @@ class Color {
     return even;
   }
 }
+*/

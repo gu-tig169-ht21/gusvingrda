@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'text_section.dart';
 
 void main() {
   runApp(const MyApp());
@@ -98,7 +99,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             const Text(
               'What happens when you reach 49?\nIf even = text is green, if uneven = text is red',
@@ -111,7 +113,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   fontWeight: FontWeight.bold,
                   fontSize: _counter.toDouble()),
             ),
-            if (_counter == 49) Image.asset('assets/celebration.gif'),
+            if (_counter == 49) Image.asset('assets/images/celebration.gif'),
+            TextSection(Colors.red),
+            TextSection(Colors.green),
+            TextSection(Colors.blue),
           ],
         ),
       ),
