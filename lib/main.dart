@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //-----------------------------------------------
   Color getTheColor(int value) {
-    Color evenOrNot = Colors.black;
+    Color evenOrNot = Colors.black; //if color = black, then something is wrong
     if (value % 2 == 1) {
       evenOrNot = Colors.red;
       //if _counter is uneven, text color should be red
@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     return evenOrNot;
   }
+//-------------- ^ First, checking if number is even or not ^
 
-//-------------- ^ First try in checking if number is even or not ^
   getIcon(int counter) {
     var ic = Icons.add;
     if (counter == 49) {
