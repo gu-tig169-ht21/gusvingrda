@@ -1,5 +1,21 @@
-
 /* BELOW ARE JUST SOME EARLIER TESTING
+
+STÄDNING AV KOD:
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Container(color: Colors.red),
+        ),
+      ),
+    );
+  }
+}
+
+TESTS THAT BEEN IMPLEMENTED:
+
 class Color {
   void main() {
     int value = 18;
