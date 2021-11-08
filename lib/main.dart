@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'text_section.dart';
 import 'CounterPlay.dart';
 import 'ToDo.dart';
+import 'numberGame.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,12 +36,16 @@ class _NewHomePageState extends State<NewHomePage> {
         appBar: AppBar(
           title: const Text('Home Page'),
         ),
-        body: Center(
+        body: Container(
+          constraints: const BoxConstraints.expand(),
+          decoration: _backgroundImage(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              _buttonCounterPlay(),
               _buttonToDo(),
+              _buttonCounterPlay(),
+              _buttonNumberGame(),
             ],
           ),
         ));
@@ -85,5 +90,34 @@ class _NewHomePageState extends State<NewHomePage> {
       icon: const Icon(Icons.task_alt),
       backgroundColor: isPressed ? Colors.white : Colors.blue,
     ));
+  }
+
+  Widget _buttonNumberGame() {
+    var isPressed = false;
+    return (FloatingActionButton.extended(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const numberGame(
+                    title: 'NumberGame',
+                  )),
+        );
+      },
+      label: const Text(
+        'NumberGame',
+      ),
+      icon: const Icon(Icons.engineering),
+      backgroundColor: isPressed ? Colors.white : Colors.white,
+    ));
+  }
+
+  _backgroundImage() {
+    return const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('assets/images/background.png'),
+        fit: BoxFit.cover,
+      ),
+    );
   }
 }
