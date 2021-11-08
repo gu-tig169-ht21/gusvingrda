@@ -15,20 +15,23 @@ class _ToDoState extends State<ToDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the CounterPlay object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextSection(Colors.red, 'test_1'),
-            TextSection(Colors.green, 'test_2'),
-            TextSection(Colors.blue, 'test_3'),
-          ],
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: _backgroundImage(),
+        child: Row(
+          children: [],
         ),
+      ),
+    );
+  }
+
+  _backgroundImage() {
+    return const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('assets/images/background.png'),
+        fit: BoxFit.cover,
       ),
     );
   }
