@@ -17,13 +17,13 @@ class _numberGameState extends State<numberGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title, style: TextStyle(color: Colors.white)),
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: _backgroundImage(),
         child: Stack(children: [
-          Container(height: 50, width: 400, color: Colors.white70),
+          Container(height: 50, width: 400, color: Colors.white),
           _comingSoon(),
         ]),
       ),

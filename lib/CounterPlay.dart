@@ -26,7 +26,10 @@ class _CounterPlayState extends State<CounterPlay> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+        ),
+        backgroundColor: Colors.white,
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),

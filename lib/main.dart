@@ -35,6 +35,7 @@ class _NewHomePageState extends State<NewHomePage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Home Page'),
+          backgroundColor: Colors.white,
         ),
         body: Container(
           constraints: const BoxConstraints.expand(),
@@ -68,7 +69,7 @@ class _NewHomePageState extends State<NewHomePage> {
         'CounterPlay',
       ),
       icon: const Icon(Icons.add),
-      backgroundColor: isPressed ? Colors.white : Colors.blue,
+      backgroundColor: isPressed ? Colors.white : Colors.white,
     ));
   }
 
@@ -88,7 +89,7 @@ class _NewHomePageState extends State<NewHomePage> {
         'To-Do',
       ),
       icon: const Icon(Icons.task_alt),
-      backgroundColor: isPressed ? Colors.white : Colors.blue,
+      backgroundColor: isPressed ? Colors.white : Colors.white,
     ));
   }
 
