@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:my_first_app/createNewTask.dart';
-
 import 'createNewTask.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/menu_items.dart';
@@ -30,8 +29,6 @@ class _ToDoState extends State<ToDo> {
             itemBuilder: (context) =>
                 [...MenuItems.itemsFirst.map(buildItem).toList()],
           ),
-
-          //IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined)),
         ],
       ),
       body: Container(
@@ -43,25 +40,24 @@ class _ToDoState extends State<ToDo> {
               padding: const EdgeInsets.all(5.0),
               child: Column(
                 children: [
-                  _Uppgift('Lär dig flutter', '2021-12-03'),
-                  _Uppgift('Handla mat', '2021-11-09'),
-                  _Uppgift('Tvätta', '2021-11-09'),
-                  _Uppgift('Träna', 'TBD...'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
-                  _Uppgift('osv...', 'xxxx-xx-xx'),
+                  _TaskDone('Lär dig flutter', '2021-12-03'),
+                  _TaskUnDone('Handla mat', '2021-11-09'),
+                  _TaskDone('Tvätta', '2021-11-09'),
+                  _TaskUnDone('Träna', 'TBD...'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
                 ],
               ),
             ),
           ],
         ),
       ),
+      floatingActionButton: _actionButton(),
     );
   }
 
@@ -85,19 +81,42 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
-  Widget _Uppgift(String namn, String deadline) {
+  Widget _TaskDone(String namn, String deadline) {
     return Card(
       child: InkWell(
-        splashColor: Colors.blue.withAlpha(30),
+        splashColor: Colors.blue.withAlpha(50),
         onTap: () {
           print('Card tapped.');
         },
         child: ListTile(
-            leading: _checkBox(),
+            leading: _CrossedCheckBox(),
             title: Text(
               namn,
-              style: TextStyle(fontSize: 25),
+              style: TextStyle(
+                  fontSize: 25, decoration: TextDecoration.lineThrough),
             ),
+            subtitle: Text(
+              'Deadline: $deadline',
+              style: TextStyle(decoration: TextDecoration.lineThrough),
+            ),
+            trailing:
+                IconButton(onPressed: () {}, icon: const Icon(Icons.close))
+            //Icon(Icons.close),
+            ),
+      ),
+    );
+  }
+
+  Widget _TaskUnDone(String namn, String deadline) {
+    return Card(
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(50),
+        onTap: () {
+          print('Card tapped.');
+        },
+        child: ListTile(
+            leading: _UnCrossedCheckBox(),
+            title: Text(namn, style: TextStyle(fontSize: 25)),
             subtitle: Text('Deadline: $deadline'),
             trailing:
                 IconButton(onPressed: () {}, icon: const Icon(Icons.close))
@@ -107,13 +126,19 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
-  _checkBox() {
+  _CrossedCheckBox() {
+    return Checkbox(
+      value: true,
+      onChanged: (val) {},
+      //shape: CircleBorder(),
+    );
+  }
+
+  _UnCrossedCheckBox() {
     return Checkbox(
       value: false,
       onChanged: (val) {},
-      shape: CircleBorder(),
-      activeColor: Colors.white,
-      hoverColor: Colors.white,
+      //shape: CircleBorder(),
     );
   }
 
@@ -127,6 +152,20 @@ class _ToDoState extends State<ToDo> {
                   )),
         );
     }
+  }
+
+  Widget _actionButton() {
+    var isPressed = false;
+    return (FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => createNewTask(title: 'Create New Task')),
+        );
+      },
+      child: const Icon(Icons.add),
+    ));
   }
 
 //---------------------- kanske klipper allt nedan:
