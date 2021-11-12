@@ -100,7 +100,7 @@ class _CounterPlayState extends State<CounterPlay> {
 
     for (int i = 2; i < value; i++) {
       if (value % i != 0) {
-        evenOrNot = Colors.yellow;
+        evenOrNot = Colors.yellow; // if yellow = PRIMENUMBER!
       } else if (value % 2 == 1) {
         evenOrNot = Colors.red;
         //if _counter is uneven, text color should be red
@@ -111,7 +111,6 @@ class _CounterPlayState extends State<CounterPlay> {
         return evenOrNot;
       }
     }
-
     return evenOrNot;
   }
 //-------------- ^ First, checking if number is even or not ^
