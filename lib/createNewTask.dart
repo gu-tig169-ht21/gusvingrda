@@ -25,20 +25,65 @@ class _createNewTaskState extends State<createNewTask> {
         backgroundColor: Colors.white,
       ),
       body: Container(
-        constraints: BoxConstraints.expand(),
+        constraints: const BoxConstraints.expand(),
         decoration: _backgroundImage(),
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                children: [
-                  Text('Here you are able to enter a new task: '),
-                  TextField(),
-                ],
+        padding:
+            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 80),
+        child: Container(
+          decoration: const BoxDecoration(color: Colors.white),
+          padding: const EdgeInsets.all(10),
+          child: ListView(
+            children: [
+              Container(height: 15),
+              const Text('Name of the task:', style: TextStyle(fontSize: 20)),
+              TextFormField(
+                decoration: const InputDecoration(
+                  hintText: 'Handla',
+                ),
               ),
-            ),
-          ],
+              Container(height: 15),
+              const Text('Deadline:', style: TextStyle(fontSize: 20)),
+              TextFormField(
+                decoration: const InputDecoration(
+                    hintText: 'yyyy-mm-dd ' + '(optional)',
+                    hintStyle: TextStyle(fontStyle: FontStyle.italic)),
+              ),
+              Container(height: 15),
+              const Text(
+                'Description:',
+                style: TextStyle(fontSize: 20),
+              ),
+              Container(height: 15),
+              const TextField(
+                maxLines: null,
+                style: TextStyle(fontSize: 18, height: 3),
+                decoration: InputDecoration(
+                    hintText: 'Här kan du skriva inköpslista etc.',
+                    border: OutlineInputBorder(),
+                    hintStyle: TextStyle(fontStyle: FontStyle.italic)),
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Cancel'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.grey,
+                  ),
+                ),
+                Container(
+                  width: 50,
+                  height: 80,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Save Task')),
+              ])
+            ],
+          ),
         ),
       ),
     );

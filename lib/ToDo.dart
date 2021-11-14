@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:my_first_app/createNewTask.dart';
+import 'package:my_first_app/viewTask.dart';
 import 'createNewTask.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/menu_items.dart';
@@ -40,17 +41,20 @@ class _ToDoState extends State<ToDo> {
               padding: const EdgeInsets.all(5.0),
               child: Column(
                 children: [
-                  _TaskDone('Lär dig flutter', '2021-12-03'),
-                  _TaskUnDone('Handla mat', '2021-11-09'),
-                  _TaskDone('Tvätta', '2021-11-09'),
-                  _TaskUnDone('Träna', 'TBD...'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx'),
+                  _TaskDone('Lär dig flutter', '2021-12-03',
+                      'Det kan vara en idé att lära sig flutter med tanke på att du läser det nu...'),
+                  _TaskUnDone('Handla mat', '2021-11-09',
+                      'Att handla:\npotatis\nmjölk\nkaffe\nkex\nkyckling\nkeso'),
+                  _TaskDone('Tvätta', '2021-11-09', 'Svart 60 grader'),
+                  _TaskUnDone('Träna', 'TBD...',
+                      'ni vet hur det är, måste ha tid o så...'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
+                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
                 ],
               ),
             ),
@@ -81,17 +85,21 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
-  Widget _TaskDone(String namn, String deadline) {
+  Widget _TaskDone(String taskName, String deadline, String description) {
     return Card(
       child: InkWell(
         splashColor: Colors.blue.withAlpha(50),
         onTap: () {
-          print('Card tapped.');
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      viewTask(taskName, deadline, description)));
         },
         child: ListTile(
             leading: _CrossedCheckBox(),
             title: Text(
-              namn,
+              taskName,
               style: TextStyle(
                   fontSize: 25, decoration: TextDecoration.lineThrough),
             ),
@@ -107,17 +115,26 @@ class _ToDoState extends State<ToDo> {
     );
   }
 
-  Widget _TaskUnDone(String namn, String deadline) {
+  Widget _TaskUnDone(String taskName, String deadline, String description) {
     return Card(
       child: InkWell(
         splashColor: Colors.blue.withAlpha(50),
         onTap: () {
-          print('Card tapped.');
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      viewTask(taskName, deadline, description)));
         },
         child: ListTile(
             leading: _UnCrossedCheckBox(),
-            title: Text(namn, style: TextStyle(fontSize: 25)),
-            subtitle: Text('Deadline: $deadline'),
+            title: Text(
+              taskName,
+              style: TextStyle(fontSize: 25),
+            ),
+            subtitle: Text(
+              'Deadline: $deadline',
+            ),
             trailing:
                 IconButton(onPressed: () {}, icon: const Icon(Icons.close))
             //Icon(Icons.close),
@@ -130,7 +147,6 @@ class _ToDoState extends State<ToDo> {
     return Checkbox(
       value: true,
       onChanged: (val) {},
-      //shape: CircleBorder(),
     );
   }
 
@@ -138,7 +154,6 @@ class _ToDoState extends State<ToDo> {
     return Checkbox(
       value: false,
       onChanged: (val) {},
-      //shape: CircleBorder(),
     );
   }
 
@@ -164,50 +179,24 @@ class _ToDoState extends State<ToDo> {
               builder: (context) => createNewTask(title: 'Create New Task')),
         );
       },
-      child: const Icon(Icons.add),
+      child: const Icon(Icons.add, color: Colors.white, size: 30),
     ));
   }
 
-//---------------------- kanske klipper allt nedan:
-  _task(
-    String _taskName,
-  ) {
-    return Row(children: [
-      Stack(children: [
-        Container(
-          height: 70,
-          width: 401,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromARGB(50, 255, 255, 255),
-                Color.fromARGB(255, 255, 255, 255)
-              ],
-            ),
-            border: Border(bottom: BorderSide(width: 1, color: Colors.grey)),
+  Widget _buildPopupDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Det funkar!'),
+      content: Stack(
+        children: [
+          Container(
+            margin: const EdgeInsets.all(10),
+            alignment: Alignment.topCenter,
+            child: Image.asset('assets/images/celebration.gif'),
           ),
-        ),
-        Row(
-          children: [
-            Checkbox(
-              value: false,
-              onChanged: (val) {},
-              shape: CircleBorder(),
-              activeColor: Colors.white,
-              hoverColor: Colors.white,
-            ),
-            Text(
-              _taskName,
-              style: TextStyle(fontSize: 25),
-            ),
-            Positioned(
-              right: 20,
-              child:
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
-            )
-          ],
-        )
-      ])
-    ]);
+        ],
+      ),
+    );
   }
+
+//---------------------- kanske klipper allt nedan:
 }
