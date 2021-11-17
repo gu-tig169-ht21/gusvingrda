@@ -1,13 +1,15 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:my_first_app/createNewTask.dart';
-import 'package:my_first_app/viewTask.dart';
+import 'package:my_first_app/task_item.dart';
+import 'package:my_first_app/task_list.dart';
+import 'viewTask.dart';
 import 'createNewTask.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/menu_items.dart';
 import 'menu_item.dart';
 import 'menu_items.dart';
-import 'text_section.dart';
+import 'package:provider/provider.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({Key? key, required this.title}) : super(key: key);
@@ -17,6 +19,8 @@ class ToDo extends StatefulWidget {
 }
 
 class _ToDoState extends State<ToDo> {
+  final TextEditingController _textFieldController = TextEditingController();
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,27 +41,26 @@ class _ToDoState extends State<ToDo> {
         decoration: _backgroundImage(),
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                children: [
-                  _TaskDone('Lär dig flutter', '2021-12-03',
-                      'Det kan vara en idé att lära sig flutter med tanke på att du läser det nu...'),
-                  _TaskUnDone('Handla mat', '2021-11-09',
-                      'Att handla:\npotatis\nmjölk\nkaffe\nkex\nkyckling\nkeso'),
-                  _TaskDone('Tvätta', '2021-11-09', 'Svart 60 grader'),
-                  _TaskUnDone('Träna', 'TBD...',
-                      'ni vet hur det är, måste ha tid o så...'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                  _TaskUnDone('osv...', 'xxxx-xx-xx', 'description'),
-                ],
-              ),
-            ),
+            TaskList(
+              [
+                TaskItem(
+                    taskName: 'Handla',
+                    deadline: '2021-11-15',
+                    description: 'Att handla: \n-potatis\n-kaffe\n-mjölk',
+                    checked: isChecked),
+                TaskItem(
+                    taskName: 'Träna',
+                    deadline: 'onsdag 18.00',
+                    description: 'Träna med Linn @Nordic',
+                    checked: isChecked),
+                TaskItem(
+                    taskName: 'Lär dig Flutter',
+                    deadline: '2021-12-13',
+                    description:
+                        'Kan vara bra att lära dig då kursen går ut på det',
+                    checked: isChecked),
+              ],
+            )
           ],
         ),
       ),
@@ -75,99 +78,20 @@ class _ToDoState extends State<ToDo> {
           ],
         ),
       );
-//---------------------------------------------------------------------------
-  _backgroundImage() {
-    return const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
-  Widget _TaskDone(String taskName, String deadline, String description) {
-    return Card(
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(50),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      viewTask(taskName, deadline, description)));
-        },
-        child: ListTile(
-            leading: _CrossedCheckBox(),
-            title: Text(
-              taskName,
-              style: TextStyle(
-                  fontSize: 25, decoration: TextDecoration.lineThrough),
-            ),
-            subtitle: Text(
-              'Deadline: $deadline',
-              style: TextStyle(decoration: TextDecoration.lineThrough),
-            ),
-            trailing:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.close))
-            //Icon(Icons.close),
-            ),
-      ),
-    );
-  }
-
-  Widget _TaskUnDone(String taskName, String deadline, String description) {
-    return Card(
-      child: InkWell(
-        splashColor: Colors.blue.withAlpha(50),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      viewTask(taskName, deadline, description)));
-        },
-        child: ListTile(
-            leading: _UnCrossedCheckBox(),
-            title: Text(
-              taskName,
-              style: TextStyle(fontSize: 25),
-            ),
-            subtitle: Text(
-              'Deadline: $deadline',
-            ),
-            trailing:
-                IconButton(onPressed: () {}, icon: const Icon(Icons.close))
-            //Icon(Icons.close),
-            ),
-      ),
-    );
-  }
-
-  _CrossedCheckBox() {
-    return Checkbox(
-      value: true,
-      onChanged: (val) {},
-    );
-  }
-
-  _UnCrossedCheckBox() {
-    return Checkbox(
-      value: false,
-      onChanged: (val) {},
-    );
-  }
 
   void onSelected(BuildContext context, MenuItem item) {
     switch (item) {
       case MenuItems.itemAdd:
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => createNewTask(
-                    title: 'Create New Task',
-                  )),
+            builder: (context) => CreateNewTask(
+              title: 'Create New Task',
+            ),
+          ),
         );
     }
   }
+//---------------------------------------------------------------------------
 
   Widget _actionButton() {
     var isPressed = false;
@@ -176,27 +100,19 @@ class _ToDoState extends State<ToDo> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => createNewTask(title: 'Create New Task')),
+              builder: (context) => CreateNewTask(title: 'Create New Task')),
         );
       },
       child: const Icon(Icons.add, color: Colors.white, size: 30),
     ));
   }
 
-  Widget _buildPopupDialog(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Det funkar!'),
-      content: Stack(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(10),
-            alignment: Alignment.topCenter,
-            child: Image.asset('assets/images/celebration.gif'),
-          ),
-        ],
+  _backgroundImage() {
+    return const BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('assets/images/background.png'),
+        fit: BoxFit.cover,
       ),
     );
   }
-
-//---------------------- kanske klipper allt nedan:
 }

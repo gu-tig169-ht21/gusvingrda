@@ -6,6 +6,6 @@ class MenuItems {
 
   static const itemAdd = MenuItem(text: 'Create new task', icon: Icons.add);
   static const itemFilter =
-      MenuItem(text: 'Filter your task', icon: Icons.filter);
+      MenuItem(text: 'Filter your tasks', icon: Icons.sort);
   static const itemSettings = MenuItem(text: 'Settings', icon: Icons.settings);
 }
