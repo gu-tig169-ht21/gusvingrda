@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'text_section.dart';
 import 'CounterPlay.dart';
 import 'ToDo.dart';
 import 'numberGame.dart';
@@ -31,29 +30,30 @@ class NewHomePage extends StatefulWidget {
 
 class _NewHomePageState extends State<NewHomePage> {
   Widget build(BuildContext context) {
-    var isPressed = false;
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home Page'),
-          backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Home Page'),
+        backgroundColor: Colors.white,
+      ),
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: _backgroundImage(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buttonToDo(),
+            _buttonCounterPlay(),
+            _buttonNumberGame(),
+          ],
         ),
-        body: Container(
-          constraints: const BoxConstraints.expand(),
-          decoration: _backgroundImage(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              _buttonToDo(),
-              _buttonCounterPlay(),
-              _buttonNumberGame(),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 
 // ------- Below are the functions --------------
   Widget _buttonCounterPlay() {
+    const Text("btn1");
     var isPressed = false;
     return (FloatingActionButton.extended(
       onPressed: () {
@@ -74,6 +74,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buttonToDo() {
+    const Text("btn2");
     var isPressed = false;
     return (FloatingActionButton.extended(
       onPressed: () {
@@ -94,6 +95,7 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buttonNumberGame() {
+    const Text("btn3");
     var isPressed = false;
     return (FloatingActionButton.extended(
       onPressed: () {

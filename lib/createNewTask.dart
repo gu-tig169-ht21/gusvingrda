@@ -1,21 +1,21 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'text_section.dart';
-import 'CounterPlay.dart';
-import 'ToDo.dart';
-import 'numberGame.dart';
-import 'menu_item.dart';
-import 'menu_items.dart';
+import 'package:provider/provider.dart';
 
-class createNewTask extends StatefulWidget {
-  const createNewTask({Key? key, required this.title}) : super(key: key);
+class CreateNewTask extends StatefulWidget {
+  const CreateNewTask({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  State<createNewTask> createState() => _createNewTaskState();
+  State<CreateNewTask> createState() {
+    return CreateNewTaskState();
+  }
 }
 
-class _createNewTaskState extends State<createNewTask> {
+class CreateNewTaskState extends State<CreateNewTask> {
+  String TaskName = 'Task';
+  String Deadline = 'xxxx-xx-xx';
+  String Description = 'Location of the task etc.';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +58,7 @@ class _createNewTaskState extends State<createNewTask> {
                 maxLines: null,
                 style: TextStyle(fontSize: 18, height: 3),
                 decoration: InputDecoration(
-                    hintText: 'Här kan du skriva inköpslista etc.',
+                    hintText: 'Location of the task etc.',
                     border: OutlineInputBorder(),
                     hintStyle: TextStyle(fontStyle: FontStyle.italic)),
               ),
