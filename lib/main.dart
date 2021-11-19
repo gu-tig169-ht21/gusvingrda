@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:my_first_app/task_model.dart';
 import 'CounterPlay.dart';
 import 'ToDo.dart';
 import 'numberGame.dart';
+import 'package:provider/provider.dart';
+import 'background.dart';
 
 void main() {
-  runApp(const MyApp());
+  var state = MyState();
+
+  runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -53,9 +58,9 @@ class _NewHomePageState extends State<NewHomePage> {
 
 // ------- Below are the functions --------------
   Widget _buttonCounterPlay() {
-    const Text("btn1");
     var isPressed = false;
     return (FloatingActionButton.extended(
+      heroTag: "btn1",
       onPressed: () {
         Navigator.push(
           context,
@@ -77,6 +82,7 @@ class _NewHomePageState extends State<NewHomePage> {
     const Text("btn2");
     var isPressed = false;
     return (FloatingActionButton.extended(
+      heroTag: "btn2",
       onPressed: () {
         Navigator.push(
           context,
@@ -95,9 +101,9 @@ class _NewHomePageState extends State<NewHomePage> {
   }
 
   Widget _buttonNumberGame() {
-    const Text("btn3");
     var isPressed = false;
     return (FloatingActionButton.extended(
+      heroTag: "btn3",
       onPressed: () {
         Navigator.push(
           context,

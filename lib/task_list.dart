@@ -1,33 +1,23 @@
 // ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names
 
 import 'dart:ui';
-import 'package:provider/provider.dart';
-import 'package:my_first_app/task_item.dart';
+import 'package:my_first_app/task_model.dart';
 import 'viewTask.dart';
 import 'package:flutter/material.dart';
-
-class MyState extends ChangeNotifier {
-  bool _isChecked = false;
-
-  void isChanged() {
-    _isChecked = !_isChecked;
-    notifyListeners();
-  }
-
-  bool get isChecked => _isChecked;
-}
+import 'package:provider/provider.dart';
 
 class TaskList extends StatelessWidget {
-  final List<TaskItem> list;
+  final List<TaskItem> taskList;
 
-  TaskList(this.list);
+  TaskList(this.taskList);
 
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
       builder: (Context, setState) => Column(
-          children:
-              list.map((taskItem) => _itemTask(taskItem, context)).toList()),
+          children: taskList
+              .map((taskItem) => _itemTask(taskItem, context))
+              .toList()),
     );
   }
 
@@ -55,38 +45,24 @@ class TaskList extends StatelessWidget {
                   }),
               title: Text(
                 taskItem.taskName,
-                style: _getTitleTextStyle(taskItem.checked),
+                style: TextStyle(
+                    fontSize: 24,
+                    decoration:
+                        taskItem.checked ? TextDecoration.lineThrough : null),
               ),
-              subtitle: Text(
-                taskItem.deadline,
-                style: _getSubtitleTextStyle(taskItem.checked),
-              ),
-              trailing:
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.close))),
+              subtitle: Text(taskItem.deadline,
+                  style: TextStyle(
+                      decoration: taskItem.checked
+                          ? TextDecoration.lineThrough
+                          : null)),
+              trailing: IconButton(
+                  onPressed: () {
+                    var state = Provider.of<MyState>(context, listen: false);
+                    state.removeTask(taskItem);
+                  },
+                  icon: const Icon(Icons.close))),
         ),
       ),
     );
-  }
-
-  _getTitleTextStyle(value) {
-    if (value!) {
-      return const TextStyle(
-          fontSize: 26, decoration: TextDecoration.lineThrough);
-    } else {
-      return const TextStyle(
-        fontSize: 26,
-      );
-    }
-  }
-
-  _getSubtitleTextStyle(value) {
-    if (value!) {
-      return const TextStyle(
-          fontSize: 16, decoration: TextDecoration.lineThrough);
-    } else {
-      return const TextStyle(
-        fontSize: 16,
-      );
-    }
   }
 }

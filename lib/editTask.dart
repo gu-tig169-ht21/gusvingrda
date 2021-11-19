@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:my_first_app/task_item.dart';
-import 'task_item.dart';
+import 'package:my_first_app/task_model.dart';
+import 'task_model.dart';
 import 'package:provider/provider.dart';
 
 class EditTask extends StatefulWidget {

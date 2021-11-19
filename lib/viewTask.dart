@@ -1,7 +1,7 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:my_first_app/task_item.dart';
+import 'package:my_first_app/task_model.dart';
 import 'background.dart';
 import 'editTask.dart';
 import 'package:provider/provider.dart';

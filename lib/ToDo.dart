@@ -1,9 +1,8 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:my_first_app/createNewTask.dart';
-import 'package:my_first_app/task_item.dart';
 import 'package:my_first_app/task_list.dart';
-import 'viewTask.dart';
+import 'package:my_first_app/task_model.dart';
 import 'createNewTask.dart';
 import 'package:flutter/material.dart';
 import 'package:my_first_app/menu_items.dart';
@@ -19,7 +18,6 @@ class ToDo extends StatefulWidget {
 }
 
 class _ToDoState extends State<ToDo> {
-  final TextEditingController _textFieldController = TextEditingController();
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
@@ -39,30 +37,11 @@ class _ToDoState extends State<ToDo> {
       body: Container(
         constraints: BoxConstraints.expand(),
         decoration: _backgroundImage(),
-        child: ListView(
-          children: [
-            TaskList(
-              [
-                TaskItem(
-                    taskName: 'Handla',
-                    deadline: '2021-11-15',
-                    description: 'Att handla: \n-potatis\n-kaffe\n-mjölk',
-                    checked: isChecked),
-                TaskItem(
-                    taskName: 'Träna',
-                    deadline: 'onsdag 18.00',
-                    description: 'Träna med Linn @Nordic',
-                    checked: isChecked),
-                TaskItem(
-                    taskName: 'Lär dig Flutter',
-                    deadline: '2021-12-13',
-                    description:
-                        'Kan vara bra att lära dig då kursen går ut på det',
-                    checked: isChecked),
-              ],
-            )
-          ],
-        ),
+        child: ListView(children: [
+          Consumer<MyState>(
+            builder: (context, state, child) => TaskList(state.list),
+          ),
+        ]),
       ),
       floatingActionButton: _actionButton(),
     );
@@ -82,11 +61,15 @@ class _ToDoState extends State<ToDo> {
   void onSelected(BuildContext context, MenuItem item) {
     switch (item) {
       case MenuItems.itemAdd:
-        Navigator.of(context).push(
+        _actionButton();
+        Navigator.push(
+          context,
           MaterialPageRoute(
-            builder: (context) => CreateNewTask(
-              title: 'Create New Task',
-            ),
+            builder: (context) => CreateNewTask(TaskItem(
+                taskName: 'New Task',
+                deadline: 'optional',
+                description: 'description',
+                checked: false)),
           ),
         );
     }
@@ -94,14 +77,20 @@ class _ToDoState extends State<ToDo> {
 //---------------------------------------------------------------------------
 
   Widget _actionButton() {
-    var isPressed = false;
     return (FloatingActionButton(
-      onPressed: () {
-        Navigator.push(
+      onPressed: () async {
+        var newtaskItem = await Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => CreateNewTask(title: 'Create New Task')),
+              builder: (context) => CreateNewTask(TaskItem(
+                  taskName: '',
+                  deadline: '',
+                  description: '',
+                  checked: false))),
         );
+        if (newtaskItem != null) {
+          Provider.of<MyState>(context, listen: false).addTask(newtaskItem);
+        }
       },
       child: const Icon(Icons.add, color: Colors.white, size: 30),
     ));
