@@ -22,46 +22,43 @@ class TaskList extends StatelessWidget {
   }
 
   Widget _itemTask(taskItem, context) {
-    return StatefulBuilder(
-      builder: (Context, setState) => Card(
-        color: Colors.white,
-        child: InkWell(
-          splashColor: Colors.blue[80],
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewTask(taskItem),
-              ),
-            );
-          },
-          child: ListTile(
-              leading: Checkbox(
-                  value: taskItem.checked,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      taskItem.checked = value;
-                    });
-                  }),
-              title: Text(
-                taskItem.taskName,
+    var state = Provider.of<MyState>(context, listen: false);
+    return Card(
+      child: InkWell(
+        splashColor: Colors.blue[80],
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ViewTask(taskItem),
+            ),
+          );
+        },
+        child: ListTile(
+            leading: Checkbox(
+                value: taskItem.checked,
+                onChanged: (value) {
+                  {
+                    state.changeChecked(taskItem);
+                  }
+                  ;
+                }),
+            title: Text(
+              taskItem.taskName,
+              style: TextStyle(
+                  fontSize: 24,
+                  decoration:
+                      taskItem.checked ? TextDecoration.lineThrough : null),
+            ),
+            subtitle: Text(taskItem.deadline,
                 style: TextStyle(
-                    fontSize: 24,
                     decoration:
-                        taskItem.checked ? TextDecoration.lineThrough : null),
-              ),
-              subtitle: Text(taskItem.deadline,
-                  style: TextStyle(
-                      decoration: taskItem.checked
-                          ? TextDecoration.lineThrough
-                          : null)),
-              trailing: IconButton(
-                  onPressed: () {
-                    var state = Provider.of<MyState>(context, listen: false);
-                    state.removeTask(taskItem);
-                  },
-                  icon: const Icon(Icons.close))),
-        ),
+                        taskItem.checked ? TextDecoration.lineThrough : null)),
+            trailing: IconButton(
+                onPressed: () {
+                  state.removeTask(taskItem);
+                },
+                icon: const Icon(Icons.close))),
       ),
     );
   }
