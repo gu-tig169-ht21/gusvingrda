@@ -27,11 +27,19 @@ class _ToDoState extends State<ToDo> {
         title: Text(widget.title),
         backgroundColor: Colors.white,
         actions: [
-          PopupMenuButton<MenuItem>(
-            onSelected: (item) => onSelected(context, item),
-            itemBuilder: (context) =>
-                [...MenuItems.itemsFirst.map(buildItem).toList()],
-          ),
+          PopupMenuButton(
+              onSelected: (value) {
+                Provider.of<MyState>(context, listen: false)
+                    .setFilter(value.toString());
+              },
+              itemBuilder: (context) => [
+                    PopupMenuItem(child: Text('All Tasks'), value: 'All'),
+                    PopupMenuItem(
+                        child: Text('Completed Tasks'), value: 'Completed'),
+                    PopupMenuItem(
+                        child: Text('Not Completed Tasks'),
+                        value: 'Not Completed'),
+                  ]),
         ],
       ),
       body: Container(
@@ -39,7 +47,9 @@ class _ToDoState extends State<ToDo> {
         decoration: _backgroundImage(),
         child: ListView(children: [
           Consumer<MyState>(
-            builder: (context, state, child) => TaskList(state.list),
+            builder: (context, state, child) => TaskList(
+              _filterList(state.list, state.filter),
+            ),
           ),
         ]),
       ),
@@ -61,17 +71,19 @@ class _ToDoState extends State<ToDo> {
   void onSelected(BuildContext context, MenuItem item) {
     switch (item) {
       case MenuItems.itemAdd:
-        _actionButton();
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => CreateNewTask(TaskItem(
-                taskName: 'New Task',
-                deadline: 'optional',
-                description: 'description',
-                checked: false)),
+            builder: (context) => CreateNewTask(
+              TaskItem(
+                  taskName: 'New Task',
+                  deadline: 'optional',
+                  description: 'description',
+                  checked: false),
+            ),
           ),
         );
+        break;
     }
   }
 //---------------------------------------------------------------------------
@@ -94,6 +106,17 @@ class _ToDoState extends State<ToDo> {
       },
       child: const Icon(Icons.add, color: Colors.white, size: 30),
     ));
+  }
+
+  List<TaskItem> _filterList(list, filterBy) {
+    if (filterBy == 'All') return list;
+    if (filterBy == 'Not Completed') {
+      return list.where((task) => task.checked == false).toList();
+    }
+    if (filterBy == 'Completed') {
+      return list.where((task) => task.checked == true).toList();
+    }
+    return list;
   }
 
   _backgroundImage() {
