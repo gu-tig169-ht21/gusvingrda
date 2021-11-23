@@ -1,20 +1,43 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:my_first_app/task_model.dart';
+import 'background.dart';
+import 'editTask.dart';
+import 'package:provider/provider.dart';
 
-class viewTask extends StatelessWidget {
-  dynamic taskName;
-  dynamic deadline;
-  dynamic description;
+class ViewTask extends StatefulWidget {
+  final taskItem;
 
-  viewTask(this.taskName, this.deadline, this.description);
+  ViewTask(this.taskItem);
+
+  @override
+  State<ViewTask> createState() {
+    return ViewTaskState(taskItem);
+  }
+}
+
+class ViewTaskState extends State<ViewTask> {
+  final taskItem;
+
+  ViewTaskState(this.taskItem);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('View Task'),
+        title: const Text('View Task'),
         backgroundColor: Colors.white,
+        actions: [
+          TextButton(
+            child: const Text('Edit'),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EditTask(taskItem)));
+            },
+          ),
+        ],
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
@@ -27,29 +50,28 @@ class viewTask extends StatelessWidget {
           child: ListView(
             children: [
               Container(height: 15),
-              Text(taskName, style: TextStyle(fontSize: 30)),
+              Text(taskItem.taskName, style: const TextStyle(fontSize: 30)),
               Container(height: 15),
               const Text('Deadline:', style: TextStyle(fontSize: 20)),
               TextFormField(
                 decoration: InputDecoration(
-                    hintText: deadline,
-                    hintStyle: TextStyle(fontStyle: FontStyle.italic)),
+                    hintText: taskItem.deadline,
+                    hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
               ),
               Container(height: 15),
               Container(height: 15),
               Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey)),
-                padding: EdgeInsets.all(5),
-                child: Text(description, style: TextStyle(fontSize: 25)),
+                decoration: const BoxDecoration(color: Colors.transparent),
+                padding: const EdgeInsets.all(5),
+                child: Text(taskItem.description,
+                    style: const TextStyle(fontSize: 25)),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Back'),
+                  child: const Text('Back'),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.grey,
                   ),
