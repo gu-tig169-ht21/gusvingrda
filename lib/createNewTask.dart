@@ -58,12 +58,17 @@ class _CreateNewTaskState extends State<CreateNewTask> {
     Navigator.pop(
         context,
         TaskItem(
+            id: "",
             taskName: taskName.toString(),
             deadline: deadline.toString(),
             description: description.toString(),
             checked: isChecked));
   }
 
+  var borderColor = Colors.blue;
+  var textColor = Colors.black;
+  var taskNameText = 'Task Name';
+  var taskNameHint = 'Vad ska du göra?';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,20 +87,28 @@ class _CreateNewTaskState extends State<CreateNewTask> {
           padding: const EdgeInsets.all(10),
           child: ListView(children: [
             Container(height: 15),
-            const Text('Task Name', style: TextStyle(fontSize: 20)),
+            Text(taskNameText,
+                style: TextStyle(fontSize: 20, color: textColor)),
             TextFormField(
               controller: _taskNametextController,
-              decoration: const InputDecoration(
-                hintText: 'Handla',
-              ),
+              decoration: InputDecoration(
+                  hintText: taskNameHint,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(width: 3, color: borderColor),
+                    borderRadius: BorderRadius.circular(15),
+                  )),
             ),
             Container(height: 15),
             const Text('Deadline:', style: TextStyle(fontSize: 20)),
             TextFormField(
               controller: _deadlinetextController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   hintText: '(optional)',
-                  hintStyle: TextStyle(fontStyle: FontStyle.italic)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 3, color: Colors.blue),
+                      borderRadius: BorderRadius.circular(15)),
+                  hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
             ),
             Container(height: 15),
             const Text(
@@ -107,10 +120,13 @@ class _CreateNewTaskState extends State<CreateNewTask> {
               controller: _descriptiontextController,
               maxLines: null,
               style: const TextStyle(fontSize: 18, height: 3),
-              decoration: const InputDecoration(
-                  hintText: 'Att handla: etc.',
-                  border: OutlineInputBorder(),
-                  hintStyle: TextStyle(fontStyle: FontStyle.italic)),
+              decoration: InputDecoration(
+                  hintText: 'Att handla: etc. (optional)',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(width: 3, color: Colors.blue),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -135,6 +151,11 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                   ),
                   onPressed: () {
                     if (_taskNametextController.text.isEmpty) {
+                      setState(() {
+                        borderColor = Colors.red;
+                        textColor = Colors.red;
+                        taskNameHint = 'Enter a name of the task';
+                      });
                     } else {
                       makeTask();
                       // pop:en sker efter en lyckad körning av "makeTask": Navigator.pop(context);

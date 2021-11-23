@@ -4,16 +4,17 @@ import 'CounterPlay.dart';
 import 'ToDo.dart';
 import 'numberGame.dart';
 import 'package:provider/provider.dart';
-import 'background.dart';
 
 void main() {
   var state = MyState();
 
-  runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
+  runApp(
+      ChangeNotifierProvider(create: (context) => state, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,14 +22,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: const NewHomePage(title: 'Flutter Demo Home Page'),
+      home: NewHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class NewHomePage extends StatefulWidget {
-  const NewHomePage({Key? key, required this.title}) : super(key: key);
+  NewHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
+  bool _loading = false;
   @override
   State<NewHomePage> createState() => _NewHomePageState();
 }

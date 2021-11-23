@@ -76,6 +76,7 @@ class _ToDoState extends State<ToDo> {
           MaterialPageRoute(
             builder: (context) => CreateNewTask(
               TaskItem(
+                  id: "",
                   taskName: 'New Task',
                   deadline: 'optional',
                   description: 'description',
@@ -95,6 +96,7 @@ class _ToDoState extends State<ToDo> {
           context,
           MaterialPageRoute(
               builder: (context) => CreateNewTask(TaskItem(
+                  id: "",
                   taskName: '',
                   deadline: '',
                   description: '',

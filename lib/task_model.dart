@@ -1,21 +1,47 @@
-// ignore_for_file: empty_constructor_bodies
+// ignore_for_file: avoid_print
 
 import 'package:flutter/cupertino.dart';
 
 class TaskItem {
+  String id;
   String taskName;
   String deadline;
   String description;
   bool checked = false;
 
   TaskItem(
-      {required this.taskName,
+      {required this.id,
+      required this.taskName,
       required this.deadline,
       required this.description,
       required this.checked});
 
   void taskCompleted(TaskItem taskItem) {
     checked = !checked;
+  }
+
+  static Map<String, dynamic> toJson(TaskItem taskItem) {
+    String info = taskItem.taskName +
+        '+' +
+        taskItem.deadline +
+        '+' +
+        taskItem.description;
+    print(info);
+
+    return {
+      'title': info,
+      'done': taskItem.checked,
+    };
+  }
+
+  static TaskItem fromJson(Map<String, dynamic> json) {
+    return TaskItem(
+      id: json['id'],
+      taskName: json['title'],
+      deadline: json['title'],
+      description: json['title'],
+      checked: json['done'],
+    );
   }
 }
 
