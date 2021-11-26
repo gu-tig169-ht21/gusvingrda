@@ -5,6 +5,8 @@ import 'package:my_first_app/task_model.dart';
 import 'task_model.dart';
 import 'package:provider/provider.dart';
 
+//DENNA KLASS FINNS MED I APPEN, MEN FYLLER I DAGSLÄGET INGET SYFTE!
+
 class EditTask extends StatefulWidget {
   final taskItem;
 
@@ -78,11 +80,11 @@ class EditTaskState extends State<EditTask> {
                   width: 50,
                   height: 80,
                 ),
-                ElevatedButton(
+/*                 ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Save Task')),
+                    child: const Text('Save Task')), */
               ])
             ],
           ),
