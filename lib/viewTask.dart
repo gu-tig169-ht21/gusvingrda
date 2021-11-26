@@ -43,7 +43,7 @@ class ViewTaskState extends State<ViewTask> {
         constraints: const BoxConstraints.expand(),
         decoration: _backgroundImage(),
         padding:
-            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 80),
+            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 15),
         child: Container(
           decoration: const BoxDecoration(color: Colors.white70),
           padding: const EdgeInsets.all(10),
@@ -79,7 +79,7 @@ class ViewTaskState extends State<ViewTask> {
                 Container(
                   height: 150,
                 ),
-              ])
+              ]),
             ],
           ),
         ),

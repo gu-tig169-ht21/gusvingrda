@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 
 //FÖRSÖKT ATT LÄGGA IN MIN BAKGRUND I EN EGEN KLASS, MEN DET HAR GÅTT SÅDÄR
 
-/* class BackgroundImage extends StatelessWidget {
+ class BackgroundImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {

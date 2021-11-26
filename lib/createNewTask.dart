@@ -58,7 +58,7 @@ class _CreateNewTaskState extends State<CreateNewTask> {
     Navigator.pop(
         context,
         TaskItem(
-            id: "",
+            taskID: "",
             taskName: taskName.toString(),
             deadline: deadline.toString(),
             description: description.toString(),
@@ -158,6 +158,7 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                       });
                     } else {
                       makeTask();
+
                       // pop:en sker efter en lyckad körning av "makeTask": Navigator.pop(context);
                     }
                   },
