@@ -16,8 +16,8 @@ class CreateNewTask extends StatefulWidget {
 
 class _CreateNewTaskState extends State<CreateNewTask> {
   String? taskName;
-  String? deadline;
-  String? description;
+  String deadline = " ";
+  String description = " ";
   bool isChecked = false;
 
   TextEditingController _taskNametextController = TextEditingController();
@@ -41,20 +41,20 @@ class _CreateNewTaskState extends State<CreateNewTask> {
       });
     });
     _deadlinetextController.addListener(() {
-      setState(() {
-        deadline = _deadlinetextController.text;
-      });
+      deadline = _deadlinetextController.text;
+      setState(() {});
     });
     _descriptiontextController.addListener(() {
-      setState(() {
-        description = _descriptiontextController.text;
-      });
+      description = _descriptiontextController.text;
+      setState(() {});
     });
   }
 
   bool inputEmpty = false;
 
   void makeTask() {
+    /* String dl = deadline.toString();
+    String ds = description.toString(); */
     Navigator.pop(
         context,
         TaskItem(
@@ -158,7 +158,6 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                       });
                     } else {
                       makeTask();
-
                       // pop:en sker efter en lyckad körning av "makeTask": Navigator.pop(context);
                     }
                   },
