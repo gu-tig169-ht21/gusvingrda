@@ -4,41 +4,61 @@ import 'CounterPlay.dart';
 import 'ToDo.dart';
 import 'numberGame.dart';
 import 'package:provider/provider.dart';
-import 'background.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   var state = MyState();
 
-  runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
+  runApp(
+      ChangeNotifierProvider(create: (context) => state, child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter experiments',
+      title: 'Flutter playArea',
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: const NewHomePage(title: 'Flutter Demo Home Page'),
+      home: NewHomePage(title: 'Flutter Play Area Home Page'),
     );
   }
 }
 
 class NewHomePage extends StatefulWidget {
-  const NewHomePage({Key? key, required this.title}) : super(key: key);
+  NewHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
   State<NewHomePage> createState() => _NewHomePageState();
 }
 
 class _NewHomePageState extends State<NewHomePage> {
+  _NewHomePageState() {
+    super.initState();
+    sendIP();
+  }
+
+  String ipText = 'loading...';
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
+        centerTitle: true,
         backgroundColor: Colors.white,
+        title: Column(children: [
+          const Text(
+            'Flutter Play Area',
+            style: TextStyle(fontSize: 24, fontStyle: FontStyle.italic),
+          ),
+          Text(
+            'IP: $ipText',
+            style: const TextStyle(fontSize: 12),
+          )
+        ]),
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
@@ -56,7 +76,7 @@ class _NewHomePageState extends State<NewHomePage> {
     );
   }
 
-// ------- Below are the functions --------------
+  // ------- Below are the functions --------------
   Widget _buttonCounterPlay() {
     var isPressed = false;
     return (FloatingActionButton.extended(
@@ -119,6 +139,20 @@ class _NewHomePageState extends State<NewHomePage> {
       icon: const Icon(Icons.engineering),
       backgroundColor: isPressed ? Colors.white : Colors.white,
     ));
+  }
+
+  void sendIP() async {
+    var result = await _fetchIP();
+    setState(() {
+      ipText = result;
+    });
+  }
+
+  Future<String> _fetchIP() async {
+    http.Response response = await http.get(Uri.parse('https://api.myip.com'));
+    var jsonData = response.body;
+    var ip = jsonDecode(jsonData);
+    return ip['ip'].toString();
   }
 
   _backgroundImage() {

@@ -13,6 +13,8 @@ class TaskList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var state = Provider.of<MyState>(context, listen: false);
+    state.getList();
     return StatefulBuilder(
       builder: (Context, setState) => Column(
           children: taskList
@@ -41,7 +43,6 @@ class TaskList extends StatelessWidget {
                   {
                     state.changeChecked(taskItem);
                   }
-                  ;
                 }),
             title: Text(
               taskItem.taskName,

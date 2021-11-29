@@ -24,6 +24,13 @@ class ViewTaskState extends State<ViewTask> {
 
   @override
   Widget build(BuildContext context) {
+    bool vis = true;
+    String dltext = taskItem.deadline.toString();
+    if (taskItem.deadline.isEmpty) {
+      vis = false;
+    } else if (dltext.compareTo(" ") == 0) {
+      vis = false;
+    }
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -43,7 +50,7 @@ class ViewTaskState extends State<ViewTask> {
         constraints: const BoxConstraints.expand(),
         decoration: _backgroundImage(),
         padding:
-            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 80),
+            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 15),
         child: Container(
           decoration: const BoxDecoration(color: Colors.white70),
           padding: const EdgeInsets.all(10),
@@ -52,11 +59,17 @@ class ViewTaskState extends State<ViewTask> {
               Container(height: 15),
               Text(taskItem.taskName, style: const TextStyle(fontSize: 30)),
               Container(height: 15),
-              const Text('Deadline:', style: TextStyle(fontSize: 20)),
-              TextFormField(
-                decoration: InputDecoration(
-                    hintText: taskItem.deadline,
-                    hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
+              Visibility(
+                visible: vis,
+                child: const Text('Deadline:', style: TextStyle(fontSize: 20)),
+              ),
+              Visibility(
+                visible: vis,
+                child: TextField(
+                  decoration: InputDecoration(
+                      hintText: taskItem.deadline,
+                      hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
+                ),
               ),
               Container(height: 15),
               Container(height: 15),
@@ -79,7 +92,7 @@ class ViewTaskState extends State<ViewTask> {
                 Container(
                   height: 150,
                 ),
-              ])
+              ]),
             ],
           ),
         ),

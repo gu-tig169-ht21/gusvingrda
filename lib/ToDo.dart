@@ -5,9 +5,6 @@ import 'package:my_first_app/task_list.dart';
 import 'package:my_first_app/task_model.dart';
 import 'createNewTask.dart';
 import 'package:flutter/material.dart';
-import 'package:my_first_app/menu_items.dart';
-import 'menu_item.dart';
-import 'menu_items.dart';
 import 'package:provider/provider.dart';
 
 class ToDo extends StatefulWidget {
@@ -18,7 +15,9 @@ class ToDo extends StatefulWidget {
 }
 
 class _ToDoState extends State<ToDo> {
-  bool isChecked = false;
+  bool allTasks = false;
+  bool completedTasks = false;
+  bool notComplededTasks = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,18 +27,35 @@ class _ToDoState extends State<ToDo> {
         backgroundColor: Colors.white,
         actions: [
           PopupMenuButton(
-              onSelected: (value) {
-                Provider.of<MyState>(context, listen: false)
-                    .setFilter(value.toString());
-              },
-              itemBuilder: (context) => [
-                    PopupMenuItem(child: Text('All Tasks'), value: 'All'),
-                    PopupMenuItem(
-                        child: Text('Completed Tasks'), value: 'Completed'),
-                    PopupMenuItem(
-                        child: Text('Not Completed Tasks'),
-                        value: 'Not Completed'),
-                  ]),
+            onSelected: (value) {
+              Provider.of<MyState>(context, listen: false)
+                  .setFilter(value.toString());
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                  child: Text('All Tasks'),
+                  textStyle: allTasks
+                      ? TextStyle(color: Colors.blue, fontSize: 20)
+                      : null,
+                  value: 'All'),
+              PopupMenuItem(
+                  child: Text('Completed Tasks'),
+                  textStyle: completedTasks
+                      ? TextStyle(color: Colors.blue, fontSize: 20)
+                      : null,
+                  value: 'Completed'),
+              PopupMenuItem(
+                  child: Text('Not Completed Tasks'),
+                  textStyle: notComplededTasks
+                      ? TextStyle(color: Colors.blue, fontSize: 20)
+                      : null,
+                  value: 'Not Completed'),
+            ],
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+              child: Text('Filter'),
+            ),
+          )
         ],
       ),
       body: Container(
@@ -56,36 +72,6 @@ class _ToDoState extends State<ToDo> {
       floatingActionButton: _actionButton(),
     );
   }
-
-  PopupMenuItem<MenuItem> buildItem(MenuItem item) => PopupMenuItem<MenuItem>(
-        value: item,
-        child: Row(
-          children: [
-            Icon(item.icon, color: Colors.black, size: 20),
-            const SizedBox(width: 12),
-            Text(item.text),
-          ],
-        ),
-      );
-
-  void onSelected(BuildContext context, MenuItem item) {
-    switch (item) {
-      case MenuItems.itemAdd:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CreateNewTask(
-              TaskItem(
-                  taskName: 'New Task',
-                  deadline: 'optional',
-                  description: 'description',
-                  checked: false),
-            ),
-          ),
-        );
-        break;
-    }
-  }
 //---------------------------------------------------------------------------
 
   Widget _actionButton() {
@@ -95,6 +81,7 @@ class _ToDoState extends State<ToDo> {
           context,
           MaterialPageRoute(
               builder: (context) => CreateNewTask(TaskItem(
+                  taskID: "",
                   taskName: '',
                   deadline: '',
                   description: '',
@@ -109,11 +96,22 @@ class _ToDoState extends State<ToDo> {
   }
 
   List<TaskItem> _filterList(list, filterBy) {
-    if (filterBy == 'All') return list;
+    if (filterBy == 'All') {
+      allTasks = true;
+      notComplededTasks = false;
+      completedTasks = false;
+      return list;
+    }
     if (filterBy == 'Not Completed') {
+      allTasks = false;
+      notComplededTasks = true;
+      completedTasks = false;
       return list.where((task) => task.checked == false).toList();
     }
     if (filterBy == 'Completed') {
+      allTasks = false;
+      notComplededTasks = false;
+      completedTasks = true;
       return list.where((task) => task.checked == true).toList();
     }
     return list;
