@@ -78,8 +78,6 @@ class _CounterPlayState extends State<CounterPlay> {
               margin: const EdgeInsets.all(10),
               alignment: Alignment.topCenter,
               child: Image.asset('assets/images/celebration.gif'),
-
-              //Image.asset('assets/images/celebration.gif
             ),
           ],
         ));

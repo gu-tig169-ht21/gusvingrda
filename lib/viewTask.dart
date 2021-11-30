@@ -1,10 +1,7 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:my_first_app/task_model.dart';
-import 'background.dart';
-import 'editTask.dart';
-import 'package:provider/provider.dart';
+//import 'editTask.dart';
 
 class ViewTask extends StatefulWidget {
   final taskItem;
@@ -36,7 +33,7 @@ class ViewTaskState extends State<ViewTask> {
         centerTitle: true,
         title: const Text('View Task'),
         backgroundColor: Colors.white,
-        actions: [
+        /* actions: [
           TextButton(
             child: const Text('Edit'),
             onPressed: () {
@@ -44,7 +41,7 @@ class ViewTaskState extends State<ViewTask> {
                   MaterialPageRoute(builder: (context) => EditTask(taskItem)));
             },
           ),
-        ],
+        ], */
       ),
       body: Container(
         constraints: const BoxConstraints.expand(),
@@ -63,13 +60,10 @@ class ViewTaskState extends State<ViewTask> {
                 visible: vis,
                 child: const Text('Deadline:', style: TextStyle(fontSize: 20)),
               ),
+              Container(height: 5),
               Visibility(
                 visible: vis,
-                child: TextField(
-                  decoration: InputDecoration(
-                      hintText: taskItem.deadline,
-                      hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
-                ),
+                child: Text(taskItem.deadline),
               ),
               Container(height: 15),
               Container(height: 15),

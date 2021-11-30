@@ -1,7 +1,8 @@
-// ignore_for_file: file_names, prefer_const_literals_to_create_immutables
+// ignore_for_file: file_names, prefer_const_literals_to_create_immutables, no_logic_in_create_state
 
 import 'package:flutter/material.dart';
-import 'package:my_first_app/task_model.dart';
+import 'task_model.dart';
+import 'package:provider/provider.dart';
 
 class CreateNewTask extends StatefulWidget {
   final TaskItem taskItem;
@@ -16,14 +17,13 @@ class CreateNewTask extends StatefulWidget {
 
 class _CreateNewTaskState extends State<CreateNewTask> {
   String? taskName;
-  String deadline = " ";
-  String description = " ";
+  String deadline = "";
+  String description = "";
   bool isChecked = false;
 
   TextEditingController _taskNametextController = TextEditingController();
   TextEditingController _deadlinetextController = TextEditingController();
   TextEditingController _descriptiontextController = TextEditingController();
-
   _CreateNewTaskState(TaskItem taskItem) {
     taskName;
     deadline;
@@ -69,6 +69,8 @@ class _CreateNewTaskState extends State<CreateNewTask> {
   var textColor = Colors.black;
   var taskNameText = 'Task Name';
   var taskNameHint = 'Vad ska du göra?';
+  bool showDetails = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,35 +100,41 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                     borderRadius: BorderRadius.circular(15),
                   )),
             ),
-            Container(height: 15),
-            const Text('Deadline:', style: TextStyle(fontSize: 20)),
-            TextFormField(
-              controller: _deadlinetextController,
-              decoration: InputDecoration(
-                  hintText: '(optional)',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 3, color: Colors.blue),
-                      borderRadius: BorderRadius.circular(15)),
-                  hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
-            ),
-            Container(height: 15),
-            const Text(
-              'Description',
-              style: TextStyle(fontSize: 20),
-            ),
-            Container(height: 15),
-            TextField(
-              controller: _descriptiontextController,
-              maxLines: null,
-              style: const TextStyle(fontSize: 18, height: 3),
-              decoration: InputDecoration(
-                  hintText: 'Att handla: etc. (optional)',
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(width: 3, color: Colors.blue),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
+            Visibility(
+              visible: show(),
+              child: Column(children: [
+                Container(height: 15),
+                const Text('Deadline:', style: TextStyle(fontSize: 20)),
+                TextFormField(
+                  controller: _deadlinetextController,
+                  decoration: InputDecoration(
+                      hintText: '(optional)',
+                      enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(width: 3, color: Colors.blue),
+                          borderRadius: BorderRadius.circular(15)),
+                      hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
+                ),
+                Container(height: 15),
+                const Text(
+                  'Description',
+                  style: TextStyle(fontSize: 20),
+                ),
+                Container(height: 15),
+                TextField(
+                  controller: _descriptiontextController,
+                  maxLines: null,
+                  style: const TextStyle(fontSize: 18, height: 3),
+                  decoration: InputDecoration(
+                      hintText: 'Att handla: etc. (optional)',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(width: 3, color: Colors.blue),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
+                ),
+              ]),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -168,6 +176,15 @@ class _CreateNewTaskState extends State<CreateNewTask> {
         ),
       ),
     );
+  }
+
+  bool show() {
+    var state = Provider.of<MyState>(context, listen: false);
+    if (state.filekey.compareTo('private') == 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 //---------------------------------------------------------------------------
