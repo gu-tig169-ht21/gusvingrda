@@ -1,23 +1,27 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
-import 'package:my_first_app/createNewTask.dart';
-import 'package:my_first_app/task_list.dart';
-import 'package:my_first_app/task_model.dart';
 import 'createNewTask.dart';
+import 'task_list.dart';
+import 'task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ToDo extends StatefulWidget {
-  const ToDo({Key? key, required this.title}) : super(key: key);
+  ToDo({Key? key, required this.title, required this.nyckel}) : super(key: key);
   final String title;
+  final String nyckel;
   @override
-  State<ToDo> createState() => _ToDoState();
+  State<ToDo> createState() => _ToDoState(nyckel);
 }
 
 class _ToDoState extends State<ToDo> {
   bool allTasks = false;
   bool completedTasks = false;
   bool notComplededTasks = false;
+  String nyckel;
+
+  _ToDoState(this.nyckel);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +69,7 @@ class _ToDoState extends State<ToDo> {
           Consumer<MyState>(
             builder: (context, state, child) => TaskList(
               _filterList(state.list, state.filter),
+              nyckel,
             ),
           ),
         ]),
@@ -80,15 +85,19 @@ class _ToDoState extends State<ToDo> {
         var newtaskItem = await Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => CreateNewTask(TaskItem(
+            builder: (context) => CreateNewTask(
+              TaskItem(
                   taskID: "",
                   taskName: '',
                   deadline: '',
                   description: '',
-                  checked: false))),
+                  checked: false),
+            ),
+          ),
         );
         if (newtaskItem != null) {
-          Provider.of<MyState>(context, listen: false).addTask(newtaskItem);
+          Provider.of<MyState>(context, listen: false)
+              .addTask(newtaskItem, nyckel);
         }
       },
       child: const Icon(Icons.add, color: Colors.white, size: 30),
