@@ -17,13 +17,8 @@ class TaskItem {
       required this.description,
       required this.checked});
 
-  void taskCompleted(TaskItem taskItem) {
-    checked = !checked;
-  }
-
   static Map<String, dynamic> toJson(TaskItem taskItem, String nyckel) {
     String info = taskItem.taskName;
-    //print('Nuvarande nyckel=$nyckel, Min privata nyckel=$privateKey');
     if (nyckel.compareTo(privateKey) == 0) {
       info += '+' + taskItem.deadline + '+' + taskItem.description;
       print(info.toString());
@@ -36,42 +31,15 @@ class TaskItem {
 
   static Map<String, dynamic> toJsonChecked(TaskItem taskItem, String nyckel) {
     String info = taskItem.taskName;
-
     if (nyckel.compareTo(privateKey) == 0) {
       info += '+' + taskItem.deadline + '+' + taskItem.description;
     }
-
     taskItem.checked = !taskItem.checked;
-
     return {
       'title': info,
       'done': taskItem.checked,
     };
   }
-
-  /* static Map<String, dynamic> toJsonWithoutDetails(TaskItem taskItem) {
-    String info = taskItem.taskName + taskItem.deadline + taskItem.description;
-
-    return {
-      'title': info,
-      'done': taskItem.checked,
-    };
-  }
-
-  static Map<String, dynamic> toJsonCheckedWithoutDetails(TaskItem taskItem) {
-    String info = taskItem.taskName +
-        '+' +
-        taskItem.deadline +
-        '+' +
-        taskItem.description;
-
-    taskItem.checked = !taskItem.checked;
-
-    return {
-      'title': info,
-      'done': taskItem.checked,
-    };
-  } */
 
   static TaskItem fromJsonWithDetails(Map<String, dynamic> json) {
     String info = json['title'];
@@ -130,6 +98,11 @@ class MyState extends ChangeNotifier {
 
   void changeChecked(TaskItem taskItem, String nyckel) async {
     _list = await Api.updateTask(taskItem, nyckel);
+    notifyListeners();
+  }
+
+  void editTask(TaskItem taskItem, String nyckel) async {
+    _list = await Api.editTask(taskItem, nyckel);
     notifyListeners();
   }
 

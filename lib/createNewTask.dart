@@ -53,8 +53,7 @@ class _CreateNewTaskState extends State<CreateNewTask> {
   bool inputEmpty = false;
 
   void makeTask() {
-    /* String dl = deadline.toString();
-    String ds = description.toString(); */
+    //Hade funderingar på att lägga in en try/catch ifall något går snett här.
     Navigator.pop(
         context,
         TaskItem(
@@ -153,23 +152,22 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                   height: 80,
                 ),
                 ElevatedButton(
-                  child: const Text(
-                    'Save Task',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  onPressed: () {
-                    if (_taskNametextController.text.isEmpty) {
-                      setState(() {
-                        borderColor = Colors.red;
-                        textColor = Colors.red;
-                        taskNameHint = 'Enter a name of the task';
-                      });
-                    } else {
-                      makeTask();
-                      // pop:en sker efter en lyckad körning av "makeTask": Navigator.pop(context);
-                    }
-                  },
-                ),
+                    child: const Text(
+                      'Save Task',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      if (_taskNametextController.text.isEmpty) {
+                        setState(() {
+                          borderColor = Colors.red;
+                          textColor = Colors.red;
+                          taskNameHint = 'Enter a name of the task';
+                        });
+                      } else {
+                        makeTask();
+                        // pop:en sker efter en lyckad körning av "makeTask": Navigator.pop(context);
+                      }
+                    }),
               ],
             )
           ]),

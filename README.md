@@ -4,21 +4,16 @@ Det här repot är uppsatt med ett projekt skapat från `flutter create ` som du
 
 
 
-## Installera Flutter
+Hej lärare!
 
-https://flutter.dev/docs/get-started/install
+Jag har valt att ta lite kreativt svängutrymme när det kommer till uppgiften, främst för att ännu mer lära mig om Flutter och hur det fungerar. 
+T.ex. så kommer ni att märka att vissa funktioner har jag inte hunnit få till riktigt ännu (t.ex. att kunna "edit:a" en task). 
 
-`Nedan ser du informationen som kommer från "flutter create" projektet.`
+Jag har dessutom fixat så att användaren via appen har tillgång till två olika listor som kallas "private" och "shared".
+(I dagsläget så har jag bara lånat en nyckel av en klasskompis till "shared"-listan). 
+Tanken hade varit om jag haft mer tid att dessutom lagt till funkionalitet för att skapa en ny nyckel till API:t som då blir ens "shared". 
+Fördelen med att även jobba med/mot hans lista, som inte har riktigt samma struktur som min (titel, deadline, description) så var jag tvungen att
+lista ut hur jag skulle kunna jobba med och presentera olika typer och mängd av data på lika sätt. 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Jag har som ni kanske redan misstänkt eventuellt tagit mig några liter vatten för mycket över huvudet, men jag hade svårt att hejda mig imellanåt
+och tyckte att det var kul att utforska Flutter och dess funktionalitet. 
