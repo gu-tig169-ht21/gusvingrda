@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'task_model.dart';
 import 'ToDo.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+//VAR GOD LÄS "README"
 
 void main() {
   var state = MyState();
@@ -41,7 +44,6 @@ class _NewHomePageState extends State<NewHomePage> {
     super.initState();
     sendIP();
   }
-  String listkey = 'private';
 
   Future<void> _loadKey() async {
     var state = Provider.of<MyState>(context, listen: false);
@@ -52,11 +54,12 @@ class _NewHomePageState extends State<NewHomePage> {
     });
   }
 
+  String listkey = 'private';
   String titel = "private";
   String ipText = 'loading...';
-  //String appbarChoice = "Private"; WORK_IN_PROGRESS(APPBAR)
   bool privateChoosen = true;
   bool sharedChoosen = false;
+  bool showQR = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,11 +68,6 @@ class _NewHomePageState extends State<NewHomePage> {
         leadingWidth: 0,
         backgroundColor: Colors.white,
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          /* const Image(
-            image: AssetImage('assets/images/guLogo.png'),
-            height: 60,
-            width: 55,
-          ), */
           Column(
             children: [
               const Text(
@@ -94,11 +92,14 @@ class _NewHomePageState extends State<NewHomePage> {
                   Provider.of<MyState>(context, listen: false)
                       .changeKey('private');
                   titel = 'private';
+                  showQR = false;
                   _loadKey();
                 } else if (sharedChoosen) {
                   Provider.of<MyState>(context, listen: false)
                       .changeKey('shared');
                   titel = 'shared';
+                  showQR = true;
+                  _loadKey();
                 }
               });
             },
@@ -111,7 +112,7 @@ class _NewHomePageState extends State<NewHomePage> {
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontSize: 19)
-                        : const TextStyle(color: Colors.black, fontSize: 18)),
+                        : const TextStyle(color: Colors.black, fontSize: 19)),
                 const TextSpan(
                     text: ' / ',
                     style: TextStyle(
@@ -125,27 +126,8 @@ class _NewHomePageState extends State<NewHomePage> {
                             color: Colors.blue,
                             fontWeight: FontWeight.bold,
                             fontSize: 19)
-                        : const TextStyle(color: Colors.black, fontSize: 18)),
-              ]
-
-                  //EARLIER VERSION WITH A DROPDOWN MENU
-                  /* PopupMenuButton( 
-            onSelected: (value) {
-              Provider.of<MyState>(context, listen: false).changeKey(value);
-              titel = value.toString();
-              _loadKey();
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                  child: Text('Private list'), value: 'private'),
-              const PopupMenuItem(child: Text('Shared list'), value: 'shared'),
-            ],
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-              child: Text(titel),
-            ),
-          ) */
-                  ),
+                        : const TextStyle(color: Colors.black, fontSize: 19)),
+              ]),
             ),
           )
         ],
@@ -154,36 +136,55 @@ class _NewHomePageState extends State<NewHomePage> {
         constraints: const BoxConstraints.expand(),
         decoration: _backgroundImage(),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buttonToDo(),
-            Container(
-              padding: const EdgeInsets.all(6),
-              height: 300,
-              decoration: const BoxDecoration(color: Colors.white60),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                    text: 'Hello and Welcome to ',
-                    style: const TextStyle(fontSize: 20, color: Colors.black),
-                    children: <TextSpan>[
-                      const TextSpan(
-                          text: '"ToDo, together!"',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      const TextSpan(
-                          text: '\nThis app is an app which contains two different ' +
-                              'lists of tasks. \nOne list which is your private and one which is shared with your friends.' +
-                              '\nIn the right corner of the Appbar, you can select wether to view your private ' +
-                              'or your shared one. To see the list, just press the button above. \n\nCurrent selection is: '),
-                      TextSpan(
-                          text: '$titel.',
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                    ]),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                height: 300,
+                decoration: const BoxDecoration(color: Colors.white70),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                      text: 'Hello and Welcome to ',
+                      style:
+                          const TextStyle(fontSize: 22, color: Colors.black87),
+                      children: <TextSpan>[
+                        const TextSpan(
+                            text: '"ToDo, together!"',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        const TextSpan(
+                            text: '\nThis app is an app which contains two different ' +
+                                'lists of tasks. \nOne list which is your private and one which is shared with your friends.' +
+                                '\nIn the right corner of the Appbar, you can select wether to view your private ' +
+                                'or your shared one. To see the list, just press the button below. \n\nCurrent selection is: '),
+                        TextSpan(
+                            text: '$titel.',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      ]),
+                ),
               ),
-            ),
-          ],
-        ),
+              Container(
+                height: 15,
+              ),
+              _buttonToDo(),
+              Visibility(
+                visible: showQR,
+                child: Column(children: [
+                  Container(
+                    height: 15,
+                  ),
+                  _qrploj(),
+                  Container(
+                    height: 15,
+                  ),
+                  const Text('Denna ruta innehar i dagsläget bara den nyckel till det ' +
+                      'delade API:et.\nTanken är att en kompis i framtiden ska kunna' +
+                      ' trycka "lägg till lista" i sin app och då kunna scanna denna.'),
+                ]),
+              ),
+            ]),
       ),
     );
   }
@@ -226,6 +227,22 @@ class _NewHomePageState extends State<NewHomePage> {
     var jsonData = response.body;
     var ip = jsonDecode(jsonData);
     return ip['ip'].toString();
+  }
+
+  _qrploj() {
+    return Column(children: [
+      Container(
+        decoration: const BoxDecoration(color: Colors.white),
+        child: const Text('Invite people to your shared list:',
+            style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+      ),
+      QrImage(
+        data: listkey,
+        version: QrVersions.auto,
+        size: 200,
+        backgroundColor: Colors.white,
+      ),
+    ]);
   }
 
   _backgroundImage() {
