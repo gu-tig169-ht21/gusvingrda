@@ -1,9 +1,7 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'editTask.dart';
-import 'task_model.dart';
-import 'package:provider/provider.dart';
+import 'background.dart';
 
 class ViewTask extends StatefulWidget {
   final taskItem;
@@ -62,12 +60,8 @@ class ViewTaskState extends State<ViewTask> {
           ), */
         ],
       ),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: _backgroundImage(),
-        padding:
-            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 15),
-        child: Container(
+      body: BackgroundImage(
+        Container(
           decoration: const BoxDecoration(color: Colors.white70),
           padding: const EdgeInsets.all(10),
           child: ListView(
@@ -109,15 +103,6 @@ class ViewTaskState extends State<ViewTask> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  _backgroundImage() {
-    return const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.cover,
       ),
     );
   }

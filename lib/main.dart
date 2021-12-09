@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:todo_together/background.dart';
 import 'task_model.dart';
 import 'ToDo.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +63,7 @@ class _NewHomePageState extends State<NewHomePage> {
   bool showQR = false;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -132,10 +134,8 @@ class _NewHomePageState extends State<NewHomePage> {
           )
         ],
       ),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: _backgroundImage(),
-        child: Column(
+      body: BackgroundImage(
+        Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -243,14 +243,5 @@ class _NewHomePageState extends State<NewHomePage> {
         backgroundColor: Colors.white,
       ),
     ]);
-  }
-
-  _backgroundImage() {
-    return const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.cover,
-      ),
-    );
   }
 }

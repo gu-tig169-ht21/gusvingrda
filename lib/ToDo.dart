@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
+import 'package:todo_together/background.dart';
+
 import 'createNewTask.dart';
 import 'task_list.dart';
 import 'task_model.dart';
@@ -62,10 +64,8 @@ class _ToDoState extends State<ToDo> {
           )
         ],
       ),
-      body: Container(
-        constraints: BoxConstraints.expand(),
-        decoration: _backgroundImage(),
-        child: ListView(children: [
+      body: BackgroundImage(
+        ListView(children: [
           Consumer<MyState>(
             builder: (context, state, child) => TaskList(
               _filterList(state.list, state.filter),

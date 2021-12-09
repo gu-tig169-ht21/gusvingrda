@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'task_model.dart';
 
@@ -11,13 +10,6 @@ var privateKey =
 const API_URL = 'https://todoapp-api-pyq5q.ondigitalocean.app';
 
 class Api {
-  static _privatNyckel() async {
-    String privNyckel = await rootBundle.loadString('assets/data/private.txt');
-    String privatNyckel = privNyckel.toString();
-    print('Från att läsa in privat nyckel: $privatNyckel');
-    return privatNyckel;
-  }
-
   static Future<List<TaskItem>> addTask(
       TaskItem taskItem, String nyckel) async {
     Map<String, dynamic> json = TaskItem.toJson(taskItem, nyckel);
@@ -30,7 +22,6 @@ class Api {
     bodyString = response.body;
     var list = jsonDecode(bodyString);
     if (nyckel.compareTo(privateKey) == 0) {
-      print('den fattar att nyckel är lika med privat nyckel');
       return list.map<TaskItem>((data) {
         return TaskItem.fromJsonWithDetails(data);
       }).toList();
@@ -70,7 +61,6 @@ class Api {
     bodyString = response.body;
     var list = jsonDecode(bodyString);
     if (nyckel.compareTo(privateKey) == 0) {
-      print('den fattar att nyckel är lika med privat nyckel');
       return list.map<TaskItem>((data) {
         return TaskItem.fromJsonWithDetails(data);
       }).toList();

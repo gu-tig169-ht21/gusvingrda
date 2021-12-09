@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables, no_logic_in_create_state
 
 import 'package:flutter/material.dart';
+import 'background.dart';
 import 'task_model.dart';
 import 'package:provider/provider.dart';
 
@@ -78,13 +79,9 @@ class _CreateNewTaskState extends State<CreateNewTask> {
         title: const Text('Create New Task'),
         backgroundColor: Colors.white,
       ),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: _backgroundImage(),
-        padding:
-            const EdgeInsets.only(left: 15, top: 15, right: 15, bottom: 80),
-        child: Container(
-          decoration: const BoxDecoration(color: Colors.white),
+      body: BackgroundImage(
+        Container(
+          decoration: const BoxDecoration(color: Colors.transparent),
           padding: const EdgeInsets.all(10),
           child: ListView(children: [
             Container(height: 15),
@@ -93,6 +90,8 @@ class _CreateNewTaskState extends State<CreateNewTask> {
             TextFormField(
               controller: _taskNametextController,
               decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
                   hintText: taskNameHint,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(width: 3, color: borderColor),
@@ -107,6 +106,8 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                 TextFormField(
                   controller: _deadlinetextController,
                   decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
                       hintText: '(optional)',
                       enabledBorder: OutlineInputBorder(
                           borderSide:
@@ -125,6 +126,8 @@ class _CreateNewTaskState extends State<CreateNewTask> {
                   maxLines: null,
                   style: const TextStyle(fontSize: 18, height: 3),
                   decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      filled: true,
                       hintText: 'Att handla: etc. (optional)',
                       enabledBorder: OutlineInputBorder(
                         borderSide:
@@ -183,16 +186,5 @@ class _CreateNewTaskState extends State<CreateNewTask> {
     } else {
       return false;
     }
-  }
-
-//---------------------------------------------------------------------------
-
-  _backgroundImage() {
-    return const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.cover,
-      ),
-    );
   }
 }

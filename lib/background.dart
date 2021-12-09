@@ -1,23 +1,23 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-//FÖRSÖKT ATT LÄGGA IN MIN BAKGRUND I EN EGEN KLASS, MEN DET HAR GÅTT SÅDÄR
+class BackgroundImage extends StatelessWidget {
+  final Widget child;
 
- class BackgroundImage extends StatelessWidget {
+  const BackgroundImage(this.child);
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
-      constraints: const BoxConstraints.expand(),
-        decoration: _backgroundImage(),
-      
-    );
-  }
-   _backgroundImage() {
-    return const BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.cover,
+      height: size.height,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/background.png'),
+          fit: BoxFit.cover,
+        ),
       ),
+      child: child,
     );
   }
-} */
+}
