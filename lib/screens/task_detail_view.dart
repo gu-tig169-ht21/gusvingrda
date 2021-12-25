@@ -1,25 +1,23 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'background.dart';
+import '../models/background.dart';
 
 class ViewTask extends StatefulWidget {
   final taskItem;
-  final String nyckel;
 
-  ViewTask(this.taskItem, this.nyckel);
+  ViewTask(this.taskItem);
 
   @override
   State<ViewTask> createState() {
-    return ViewTaskState(taskItem, nyckel);
+    return ViewTaskState(taskItem);
   }
 }
 
 class ViewTaskState extends State<ViewTask> {
   final taskItem;
-  final nyckel;
 
-  ViewTaskState(this.taskItem, this.nyckel);
+  ViewTaskState(this.taskItem);
 
   @override
   Widget build(BuildContext context) {
@@ -35,30 +33,6 @@ class ViewTaskState extends State<ViewTask> {
         centerTitle: true,
         title: const Text('View Task'),
         backgroundColor: Colors.white,
-        actions: [
-/*           TextButton(    HÄR ÄR ALLTSÅ KNPPEN TILL EDIT TASK (metoden som inte fungerar)
-            child: const Text('Edit'),
-            onPressed: () async {
-              var newtaskItem = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditTask(
-                    TaskItem(
-                        taskID: "",
-                        taskName: '',
-                        deadline: '',
-                        description: '',
-                        checked: false),
-                  ),
-                ),
-              );
-              if (newtaskItem != null) {
-                Provider.of<MyState>(context, listen: false)
-                    .editTask(newtaskItem, nyckel);
-              }
-            },
-          ), */
-        ],
       ),
       body: BackgroundImage(
         Container(

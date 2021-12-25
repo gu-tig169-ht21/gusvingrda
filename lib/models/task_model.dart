@@ -1,7 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/cupertino.dart';
-import 'api.dart';
+import '../back_end/api.dart';
 
 class TaskItem {
   String taskID;
@@ -73,36 +73,38 @@ class MyState extends ChangeNotifier {
   List<TaskItem> _list = [];
   String _filterBy = 'All';
   String _currentKey = 'private';
+  late String _apiKey;
 
   String get filekey => _currentKey;
   String get filter => _filterBy;
+  String get apiKey => _apiKey;
 
   List<TaskItem> get list => _list;
 
-  Future getList(nyckel) async {
-    List<TaskItem> list = await Api.getTaskList(nyckel);
+  Future getList(context) async {
+    List<TaskItem> list = await Api.getTaskList(context);
     _list = list;
     notifyListeners();
   }
 
-  void addTask(TaskItem taskItem, String nyckel) async {
-    _list = await Api.addTask(taskItem, nyckel);
+  void addTask(TaskItem taskItem, context) async {
+    _list = await Api.addTask(taskItem, context);
     notifyListeners();
   }
 
-  void removeTask(TaskItem taskItem, String nyckel) async {
-    _list = await Api.deleteTask(taskItem.taskID, nyckel);
+  void removeTask(TaskItem taskItem, context) async {
+    _list = await Api.deleteTask(taskItem.taskID, context);
     print('removing task: this message is from task_model');
     notifyListeners();
   }
 
-  void changeChecked(TaskItem taskItem, String nyckel) async {
-    _list = await Api.updateTask(taskItem, nyckel);
+  void changeChecked(TaskItem taskItem, context) async {
+    _list = await Api.updateTask(taskItem, context);
     notifyListeners();
   }
 
-  void editTask(TaskItem taskItem, String nyckel) async {
-    _list = await Api.editTask(taskItem, nyckel);
+  void editTask(TaskItem taskItem) async {
+    _list = await Api.editTask(taskItem, _apiKey);
     notifyListeners();
   }
 
@@ -113,6 +115,11 @@ class MyState extends ChangeNotifier {
 
   void changeKey(key) {
     _currentKey = key;
+    notifyListeners();
+  }
+
+  void setApiKey(apiKey) {
+    _apiKey = apiKey;
     notifyListeners();
   }
 }

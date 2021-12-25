@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:todo_together/background.dart';
-import 'task_model.dart';
-import 'ToDo.dart';
+import 'package:todo_together/models/background.dart';
+import 'models/task_model.dart';
+import 'screens/todo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,13 +13,10 @@ import 'dart:convert';
 void main() {
   var state = MyState();
 
-  runApp(
-      ChangeNotifierProvider(create: (context) => state, child: const MyApp()));
+  runApp(ChangeNotifierProvider(create: (context) => state, child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +31,7 @@ class MyApp extends StatelessWidget {
 }
 
 class NewHomePage extends StatefulWidget {
-  const NewHomePage({Key? key, required this.title}) : super(key: key);
+  const NewHomePage({required this.title});
   final String title;
   @override
   State<NewHomePage> createState() => _NewHomePageState();
@@ -46,24 +43,28 @@ class _NewHomePageState extends State<NewHomePage> {
     sendIP();
   }
 
-  Future<void> _loadKey() async {
+  Future<void> _changeKey() async {
     var state = Provider.of<MyState>(context, listen: false);
     listkey = state.filekey;
+    print(state.filekey);
     final _loadedKey = await rootBundle.loadString('assets/data/$listkey.txt');
+    print(_loadedKey);
     setState(() {
-      listkey = _loadedKey;
+      apiKey = _loadedKey; //HÄR FÅR JAG API KEY
+      Provider.of<MyState>(context, listen: false).setApiKey(apiKey);
     });
   }
 
   String listkey = 'private';
   String titel = "private";
   String ipText = 'loading...';
+  late String apiKey;
   bool privateChoosen = true;
   bool sharedChoosen = false;
   bool showQR = false;
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -95,13 +96,13 @@ class _NewHomePageState extends State<NewHomePage> {
                       .changeKey('private');
                   titel = 'private';
                   showQR = false;
-                  _loadKey();
+                  _changeKey();
                 } else if (sharedChoosen) {
                   Provider.of<MyState>(context, listen: false)
                       .changeKey('shared');
                   titel = 'shared';
                   showQR = true;
-                  _loadKey();
+                  _changeKey();
                 }
               });
             },
@@ -135,56 +136,58 @@ class _NewHomePageState extends State<NewHomePage> {
         ],
       ),
       body: BackgroundImage(
-        Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(6),
-                height: 300,
-                decoration: const BoxDecoration(color: Colors.white70),
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text: 'Hello and Welcome to ',
-                      style:
-                          const TextStyle(fontSize: 22, color: Colors.black87),
-                      children: <TextSpan>[
-                        const TextSpan(
-                            text: '"ToDo, together!"',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        const TextSpan(
-                            text: '\nThis app is an app which contains two different ' +
-                                'lists of tasks. \nOne list which is your private and one which is shared with your friends.' +
-                                '\nIn the right corner of the Appbar, you can select wether to view your private ' +
-                                'or your shared one. To see the list, just press the button below. \n\nCurrent selection is: '),
-                        TextSpan(
-                            text: '$titel.',
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
-                      ]),
+        SingleChildScrollView(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  height: 300,
+                  decoration: const BoxDecoration(color: Colors.white70),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        text: 'Hello and Welcome to ',
+                        style: const TextStyle(
+                            fontSize: 22, color: Colors.black87),
+                        children: <TextSpan>[
+                          const TextSpan(
+                              text: '"ToDo, together!"',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                          const TextSpan(
+                              text: '\nThis app is an app which contains two different ' +
+                                  'lists of tasks. \nOne list which is your private and one which is shared with your friends.' +
+                                  '\nIn the right corner of the Appbar, you can select wether to view your private ' +
+                                  'or your shared one. To see the list, just press the button below. \n\nCurrent selection is: '),
+                          TextSpan(
+                              text: '$titel.',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
+                        ]),
+                  ),
                 ),
-              ),
-              Container(
-                height: 15,
-              ),
-              _buttonToDo(),
-              Visibility(
-                visible: showQR,
-                child: Column(children: [
-                  Container(
-                    height: 15,
-                  ),
-                  _qrploj(),
-                  Container(
-                    height: 15,
-                  ),
-                  const Text('Denna ruta innehar i dagsläget bara den nyckel till det ' +
-                      'delade API:et.\nTanken är att en kompis i framtiden ska kunna' +
-                      ' trycka "lägg till lista" i sin app och då kunna scanna denna.'),
-                ]),
-              ),
-            ]),
+                Container(
+                  height: 15,
+                ),
+                _buttonToDo(),
+                Visibility(
+                  visible: showQR,
+                  child: Column(children: [
+                    Container(
+                      height: 15,
+                    ),
+                    _qrploj(),
+                    Container(
+                      height: 15,
+                    ),
+                    const Text('Denna ruta innehar i dagsläget bara den nyckel till det ' +
+                        'delade API:et.\nTanken är att en kompis i framtiden ska kunna' +
+                        ' trycka "lägg till lista" i sin app och då kunna scanna denna.'),
+                  ]),
+                ),
+              ]),
+        ),
       ),
     );
   }
@@ -197,13 +200,12 @@ class _NewHomePageState extends State<NewHomePage> {
       elevation: 10,
       heroTag: "btn2",
       onPressed: () {
-        _loadKey();
+        _changeKey();
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => ToDo(
                     title: 'To-Do: $titel',
-                    nyckel: listkey,
                   )),
         );
       },

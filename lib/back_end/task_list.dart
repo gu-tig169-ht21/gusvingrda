@@ -1,21 +1,20 @@
 // ignore_for_file: avoid_types_as_parameter_names, non_constant_identifier_names
 
 import 'dart:ui';
-import 'task_model.dart';
-import 'viewTask.dart';
+import '../models/task_model.dart';
+import '../screens/task_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TaskList extends StatelessWidget {
   final List<TaskItem> taskList;
-  final String nyckel;
 
-  TaskList(this.taskList, this.nyckel);
+  TaskList(this.taskList);
 
   @override
   Widget build(BuildContext context) {
     var state = Provider.of<MyState>(context, listen: false);
-    state.getList(nyckel);
+    state.getList(context);
     return StatefulBuilder(
       builder: (Context, setState) => Column(
           children: taskList
@@ -33,7 +32,7 @@ class TaskList extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ViewTask(taskItem, nyckel),
+              builder: (context) => ViewTask(taskItem),
             ),
           );
         },
@@ -42,7 +41,7 @@ class TaskList extends StatelessWidget {
                 value: taskItem.checked,
                 onChanged: (value) {
                   {
-                    state.changeChecked(taskItem, nyckel);
+                    state.changeChecked(taskItem, context);
                   }
                 }),
             title: Text(
@@ -61,7 +60,7 @@ class TaskList extends StatelessWidget {
             ),
             trailing: IconButton(
                 onPressed: () {
-                  state.removeTask(taskItem, nyckel);
+                  state.removeTask(taskItem, context);
                 },
                 icon: const Icon(Icons.close))),
       ),

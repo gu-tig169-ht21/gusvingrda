@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'task_model.dart';
+import 'package:provider/provider.dart';
+import '../models/task_model.dart';
 
 var privateKey =
     '0ea541c9-1432-4d89-b9d9-d8df58498f87'; //detta är min nyckel med detaljer
@@ -10,8 +11,9 @@ var privateKey =
 const API_URL = 'https://todoapp-api-pyq5q.ondigitalocean.app';
 
 class Api {
-  static Future<List<TaskItem>> addTask(
-      TaskItem taskItem, String nyckel) async {
+  static Future<List<TaskItem>> addTask(TaskItem taskItem, context) async {
+    var state = Provider.of<MyState>(context, listen: false);
+    String nyckel = state.apiKey;
     Map<String, dynamic> json = TaskItem.toJson(taskItem, nyckel);
     var bodyString = jsonEncode(json);
     var response = await http.post(
@@ -32,7 +34,9 @@ class Api {
     }
   }
 
-  static Future deleteTask(String taskID, String nyckel) async {
+  static Future deleteTask(String taskID, context) async {
+    var state = Provider.of<MyState>(context, listen: false);
+    String nyckel = state.apiKey;
     var response =
         await http.delete(Uri.parse('$API_URL/todos/$taskID?key=$nyckel'));
     var bodyString = response.body;
@@ -48,7 +52,9 @@ class Api {
     }
   }
 
-  static Future updateTask(TaskItem taskItem, String nyckel) async {
+  static Future updateTask(TaskItem taskItem, context) async {
+    var state = Provider.of<MyState>(context, listen: false);
+    String nyckel = state.apiKey;
     String taskID = taskItem.taskID;
     Map<String, dynamic> json = TaskItem.toJsonChecked(taskItem, nyckel);
     var bodyString = jsonEncode(json);
@@ -71,7 +77,9 @@ class Api {
     }
   }
 
-  static Future editTask(TaskItem taskItem, String nyckel) async {
+  static Future editTask(TaskItem taskItem, context) async {
+    var state = Provider.of<MyState>(context, listen: false);
+    String nyckel = state.apiKey;
     String taskID = taskItem.taskID;
     Map<String, dynamic> json = TaskItem.toJson(taskItem, nyckel);
     var bodyString = jsonEncode(json);
@@ -94,7 +102,9 @@ class Api {
     }
   }
 
-  static Future<List<TaskItem>> getTaskList(String nyckel) async {
+  static Future<List<TaskItem>> getTaskList(context) async {
+    var state = Provider.of<MyState>(context, listen: false);
+    String nyckel = state.apiKey;
     var response = await http.get(Uri.parse('$API_URL/todos?key=$nyckel'));
     String bodyString = response.body;
     var json = jsonDecode(bodyString);

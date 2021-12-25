@@ -1,28 +1,26 @@
 // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
-import 'package:todo_together/background.dart';
+import 'package:todo_together/models/background.dart';
 
-import 'createNewTask.dart';
-import 'task_list.dart';
-import 'task_model.dart';
+import 'create_new_task_view.dart';
+import '../back_end/task_list.dart';
+import '../models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ToDo extends StatefulWidget {
-  ToDo({Key? key, required this.title, required this.nyckel}) : super(key: key);
+  ToDo({required this.title});
   final String title;
-  final String nyckel;
   @override
-  State<ToDo> createState() => _ToDoState(nyckel);
+  State<ToDo> createState() => _ToDoState();
 }
 
 class _ToDoState extends State<ToDo> {
   bool allTasks = false;
   bool completedTasks = false;
   bool notComplededTasks = false;
-  String nyckel;
 
-  _ToDoState(this.nyckel);
+  _ToDoState();
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +67,6 @@ class _ToDoState extends State<ToDo> {
           Consumer<MyState>(
             builder: (context, state, child) => TaskList(
               _filterList(state.list, state.filter),
-              nyckel,
             ),
           ),
         ]),
@@ -97,7 +94,7 @@ class _ToDoState extends State<ToDo> {
         );
         if (newtaskItem != null) {
           Provider.of<MyState>(context, listen: false)
-              .addTask(newtaskItem, nyckel);
+              .addTask(newtaskItem, context);
         }
       },
       child: const Icon(Icons.add, color: Colors.white, size: 30),

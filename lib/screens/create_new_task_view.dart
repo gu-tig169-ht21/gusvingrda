@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, prefer_const_literals_to_create_immutables, no_logic_in_create_state
 
 import 'package:flutter/material.dart';
-import 'background.dart';
-import 'task_model.dart';
+import '../models/background.dart';
+import '../models/task_model.dart';
 import 'package:provider/provider.dart';
 
 class CreateNewTask extends StatefulWidget {
