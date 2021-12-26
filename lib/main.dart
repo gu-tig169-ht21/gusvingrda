@@ -5,8 +5,6 @@ import 'package:todo_together/models/background.dart';
 import 'models/task_model.dart';
 import 'screens/todo_view.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 //VAR GOD LÄS "README"
 
@@ -40,7 +38,6 @@ class NewHomePage extends StatefulWidget {
 class _NewHomePageState extends State<NewHomePage> {
   _NewHomePageState() {
     super.initState();
-    sendIP();
   }
 
   Future<void> _changeKey() async {
@@ -57,7 +54,6 @@ class _NewHomePageState extends State<NewHomePage> {
 
   String listkey = 'private';
   String titel = "private";
-  String ipText = 'loading...';
   late String apiKey;
   bool privateChoosen = true;
   bool sharedChoosen = false;
@@ -72,15 +68,11 @@ class _NewHomePageState extends State<NewHomePage> {
         backgroundColor: Colors.white,
         title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
           Column(
-            children: [
-              const Text(
+            children: const [
+              Text(
                 'ToDo, together',
                 style: TextStyle(fontSize: 22, fontStyle: FontStyle.italic),
               ),
-              Text(
-                'IP: $ipText',
-                style: const TextStyle(fontSize: 12),
-              )
             ],
           ),
         ]),
@@ -215,20 +207,6 @@ class _NewHomePageState extends State<NewHomePage> {
       icon: const Icon(Icons.task_alt),
       backgroundColor: isPressed ? Colors.white : Colors.white,
     ));
-  }
-
-  void sendIP() async {
-    var result = await _fetchIP();
-    setState(() {
-      ipText = result;
-    });
-  }
-
-  Future<String> _fetchIP() async {
-    http.Response response = await http.get(Uri.parse('https://api.myip.com'));
-    var jsonData = response.body;
-    var ip = jsonDecode(jsonData);
-    return ip['ip'].toString();
   }
 
   _qrploj() {
